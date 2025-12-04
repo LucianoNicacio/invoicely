@@ -23,8 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'company_id',
-        'role',
     ];
 
     public function company(): BelongsTo

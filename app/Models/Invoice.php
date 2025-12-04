@@ -12,7 +12,6 @@ class Invoice extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'company_id',
         'client_id',
         'invoice_number',
         'status',
@@ -43,11 +42,6 @@ class Invoice extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function client(): BelongsTo
-    {
-        return $this->belongsTo(Client::class);
-    }
-
     public function lines(): HasMany
     {
         return $this->hasMany(InvoiceLine::class)->orderBy('sort_order');
@@ -67,5 +61,17 @@ class Invoice extends Model
     public function getIsOverdueAttribute(): bool
     {
         return $this->status !== 'paid' && $this->due_date->isPast();
+    }
+
+    /**
+     * Generate next invoice number
+     */
+    public static function generateInvoiceNumber(): string
+    {
+        $prefix = config('invoicely.invoice_prefix', 'INV');
+        $lastInvoice = self::withTrashed()->orderBy('id', 'desc')->first();
+        $nextNumber = $lastInvoice ? $lastInvoice->id + 1 : 1;
+
+        return $prefix . '-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
     }
 }

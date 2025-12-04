@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
-
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
@@ -30,9 +28,6 @@ return new class extends Migration
 
             $table->timestamps();
             $table->softDeletes();
-
-            // Index for fast lookups
-            $table->index('company_id');
         });
     }
 

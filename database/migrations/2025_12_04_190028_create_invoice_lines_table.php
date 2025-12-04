@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('invoice_lines', function (Blueprint $table) {
@@ -17,8 +14,8 @@ return new class extends Migration
 
             $table->string('description');
             $table->decimal('quantity', 10, 2)->default(1);
-            $table->unsignedBigInteger('unit_price'); // In cents
-            $table->unsignedBigInteger('total');      // In cents
+            $table->unsignedBigInteger('unit_price');
+            $table->unsignedBigInteger('total');
 
             $table->unsignedSmallInteger('sort_order')->default(0);
 
@@ -26,9 +23,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('invoice_lines');
